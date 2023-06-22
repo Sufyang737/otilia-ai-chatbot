@@ -1,0 +1,14 @@
+{
+    "intens":[
+        {
+            "tag": "saludo",
+            "patterns": ["hola", "que tal","como estas","Una consulta"],
+            "responses":["Hola, como te va?", "Todo muy bien, ¿usted?","Hola!"]
+        },
+        {
+            "tag": "nombre",
+            "patterns": ["como te llamas?", "como es tu nombre","quien eres"],
+            "responses":["Me llamo sufyan, sere tu asistente por toda esta etapa"]
+        }
+    ]
+}
