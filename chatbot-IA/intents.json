@@ -1,0 +1,19 @@
+{"intents":[
+    {
+        "tag": "saludo",
+        "patterns": ["hola", "qué tal", "cómo estás", "saludos"],
+        "responses": ["Hola!", "Buenos días!", "¿Cómo estás?"]
+    },
+    {
+        "tag": "nombre",
+        "patterns": ["cómo es tu nombre", "cómo te llamas"],
+        "responses": ["Me llamo otiChat", "Seré tu asistente vitual por esta etapa concurrida"]
+    },
+    {
+        "tag": "curso",
+        "patterns": ["obtener info curso", "curso"],
+        "responses": ["Digame que cursos quiere sra", "Cuentame sobre los curos q le interese"]
+    }
+]
+
+}
