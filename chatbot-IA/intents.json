@@ -1,14 +1,19 @@
-{
-    "intens":[
-        {
-            "tag": "saludo",
-            "patterns": ["hola", "que tal","como estas","Una consulta"],
-            "responses":["Hola, como te va?", "Todo muy bien, ¿usted?","Hola!"]
-        },
-        {
-            "tag": "nombre",
-            "patterns": ["como te llamas?", "como es tu nombre","quien eres"],
-            "responses":["Me llamo sufyan, sere tu asistente por toda esta etapa"]
-        }
-    ]
+{"intents":[
+    {
+        "tag": "saludo",
+        "patterns": ["hola", "qué tal", "cómo estás", "saludos"],
+        "responses": ["Hola!", "Buenos días!", "¿Cómo estás?"]
+    },
+    {
+        "tag": "nombre",
+        "patterns": ["cómo es tu nombre", "cómo te llamas"],
+        "responses": ["Me llamo otiChat", "Seré tu asistente vitual por esta etapa concurrida"]
+    },
+    {
+        "tag": "curso",
+        "patterns": ["obtener info curso", "curso"],
+        "responses": ["Digame que cursos quiere sra", "Cuentame sobre los curos q le interese"]
+    }
+]
+
 }
