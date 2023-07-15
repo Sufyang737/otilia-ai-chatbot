@@ -13,6 +13,11 @@
         "tag": "curso",
         "patterns": ["obtener info curso", "curso"],
         "responses": ["Digame que cursos quiere sra", "Cuentame sobre los curos q le interese"]
+    },
+    {
+        "tag": "hello",
+        "patterns": ["hello", "good night"],
+        "responses": ["Hi!", "Hello how are you"]
     }
 ]
 

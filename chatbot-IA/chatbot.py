@@ -8,6 +8,7 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 
 from keras.models import load_model
+from flask import Flask, render_template, request
 
 lemmatizer = WordNetLemmatizer()
 
@@ -46,6 +47,8 @@ def get_response(tag, intents_json):
             break
     return result
 
+app = Flask(__name__)
+
 # Configurar la conexión a la base de datos
 connection = mysql.connector.connect(
     host="localhost",
@@ -66,12 +69,18 @@ def insert_chat_record(user_message, chat_response):
     connection.commit()
     print("Registro insertado correctamente")
 
-while True:
-    print("Usuario: ")
-    message = input("")
-    ints = predict_class(message)
-    res = get_response(ints, intents)
-    print("OtiChat: ", res)
-    # Insertar el registro en la base de datos
-    insert_chat_record(message, res)
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.form['user_input']
+    ints = predict_class(user_message)
+    res = get_response(ints, intents)
+    # Insertar el registro en la base de datos
+    insert_chat_record(user_message, res)
+    return res
+
+if __name__ == '__main__':
+    app.run()

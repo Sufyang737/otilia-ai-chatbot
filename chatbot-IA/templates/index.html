@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chatbot</h2>
+        </div>
+        <div id="chatbot-dialogue" class="chat-dialogue">
+            <div id="chatbot-response" class="response-container">
+                <div class="response-row">
+                    <div class="user-message">
+                        <span class="message-content">Usuario: </span>
+                        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+                        <button id="send-button" onclick="sendMessage()">Enviar</button>
+                    </div>
+                    <div class="chatbot-message">
+                        <span class="message-content">Chatbot: </span>
+                        <div id="chatbot-output" class="chatbot-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/script.js"></script>
+</body>
+</html>
