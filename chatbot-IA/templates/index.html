@@ -1,31 +1,203 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Chatbot</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+
+        button {
+            margin-top: 10px;
+  font-family: inherit;
+  font-size: 20px;
+  background: royalblue;
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+
+button svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button:hover span {
+  transform: translateX(5em);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .chat-dialogue {
+            border: 4px solid #ff00c8;
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+
+        .message-container {
+            margin-bottom: 10px;
+        }
+
+        .user-message-container {
+            text-align: right;
+        }
+
+        .chatbot-message-container {
+            text-align: left;
+        }
+
+        .message-content {
+            font-weight: bold;
+        }
+
+        .user-input-container {
+            margin-top: 10px;
+            display: flex;
+        }
+
+        .user-input {
+            flex: 1;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        .send-button {
+            padding: 5px 10px;
+        }
+
+        .input {
+            border: 4px solid #000000;
+            padding:10px;
+            color: rgb(0, 0, 0);
+            width: 500px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="chat-container">
-        <div class="chat-header">
-            <h2>Chatbot</h2>
-        </div>
+        <h2>Chatbot</h2>
         <div id="chatbot-dialogue" class="chat-dialogue">
-            <div id="chatbot-response" class="response-container">
-                <div class="response-row">
-                    <div class="user-message">
-                        <span class="message-content">Usuario: </span>
-                        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
-                        <button id="send-button" onclick="sendMessage()">Enviar</button>
-                    </div>
-                    <div class="chatbot-message">
-                        <span class="message-content">Chatbot: </span>
-                        <div id="chatbot-output" class="chatbot-output"></div>
-                    </div>
-                </div>
-            </div>
+            <div id="chatbot-messages" class="response-container"></div>
         </div>
+        <div class="user-input-container">
+            <form id="chat-form">
+                <input type="text" class="input" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="on">
+                <button id="send-button">
+                    <div class="svg-wrapper-1">
+                        <div class="svg-wrapper">
+                            <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Enviar</span>
+                </button>
+            </form>
+        </div>
+        <div id="loader" style="display: none;">Cargando...</div>
     </div>
-    <script src="static/script.js"></script>
+    <script>
+        // Esperar a que la página se cargue completamente
+            window.addEventListener("load", function () {
+                // Obtener los elementos del DOM
+                var chatForm = document.getElementById("chat-form");
+                var userInput = document.getElementById("user-input");
+                var chatbotMessages = document.getElementById("chatbot-messages");
+                var loader = document.getElementById("loader");
+
+                // Agregar un evento de escucha para el formulario de chat
+                chatForm.addEventListener("submit", function (event) {
+                    event.preventDefault(); // Evitar que se envíe el formulario por defecto
+                    var userMessage = userInput.value; // Obtener el mensaje del usuario
+                    userInput.value = ""; // Limpiar el campo de entrada
+
+                    // Crear un elemento para mostrar el mensaje del usuario
+                    var userMessageElement = document.createElement("div");
+                    userMessageElement.textContent = "Usuario: " + userMessage;
+                    userMessageElement.classList.add("user-message");
+                    chatbotMessages.appendChild(userMessageElement);
+
+                    loader.style.display = "block"; // Mostrar el mensaje de carga
+
+                    // Realizar una solicitud al servidor para obtener la respuesta del chatbot
+                    fetch("/chat", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "user_input=" + encodeURIComponent(userMessage)
+                    })
+                        .then(function (response) {
+                            return response.text(); // Obtener la respuesta del servidor
+                        })
+                        .then(function (response) {
+                            // Crear un elemento para mostrar la respuesta del chatbot
+                            var chatbotResponseElement = document.createElement("div");
+                            chatbotResponseElement.textContent = "Chatbot: " + response;
+                            chatbotResponseElement.classList.add("chatbot-message");
+                            chatbotMessages.appendChild(chatbotResponseElement);
+
+                            loader.style.display = "none"; // Ocultar el mensaje de carga
+                        });
+                });
+            });
+    </script>
 </body>
+
 </html>

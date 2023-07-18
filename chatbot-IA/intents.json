@@ -10,14 +10,14 @@
         "responses": ["Me llamo otiChat", "Seré tu asistente vitual por esta etapa concurrida"]
     },
     {
-        "tag": "curso",
-        "patterns": ["obtener info curso", "curso"],
-        "responses": ["Digame que cursos quiere sra", "Cuentame sobre los curos q le interese"]
+        "tag": "cursos",
+        "patterns": ["obtener infomarcion sobre los cursos", "cursos", "que tipos de cursos vendes", "Digame todods los cursos que tienes"],
+        "responses": ["Los cursos que tenemos actualmente son: Fertilidad, post parto, gestacion "]
     },
     {
-        "tag": "hello",
-        "patterns": ["hello", "good night"],
-        "responses": ["Hi!", "Hello how are you"]
+        "tag": "fertilidad",
+        "patterns": ["Quiero mas informacion sobre el curso de fertilidad", "me interesa el curso de fertilidad"],
+        "responses": ["Hi!", "Por supuesto! (explicacion sobre fertiilidad) mas informacion sobre este curso LINK"]
     }
 ]
 

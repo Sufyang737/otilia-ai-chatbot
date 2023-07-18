@@ -2,7 +2,6 @@ import random
 import json
 import pickle
 import numpy as np
-import mysql.connector
 
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -49,26 +48,6 @@ def get_response(tag, intents_json):
 
 app = Flask(__name__)
 
-# Configurar la conexión a la base de datos
-connection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="databasechatbot"
-)
-
-# Crear un cursor para ejecutar las consultas
-cursor = connection.cursor()
-
-
-# Insertar un registro en la tabla
-def insert_chat_record(user_message, chat_response):
-    sql = "INSERT INTO mensaje_usuario_chat (mensaje_usuario, respuesta_chat) VALUES (%s, %s)"
-    values = (user_message, chat_response)
-    cursor.execute(sql, values)
-    connection.commit()
-    print("Registro insertado correctamente")
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -78,9 +57,7 @@ def chat():
     user_message = request.form['user_input']
     ints = predict_class(user_message)
     res = get_response(ints, intents)
-    # Insertar el registro en la base de datos
-    insert_chat_record(user_message, res)
     return res
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5002)
